@@ -1,0 +1,20 @@
+.error-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &__content {
+    mix-blend-mode: difference;
+    color: rgb(185, 185, 185);
+    text-align: center;
+
+    .big-text {
+      font-size: 14vw;
+    }
+  }
+
+  &__link {
+    font: inherit;
+    color: #9a3b3b;
+  }
+}

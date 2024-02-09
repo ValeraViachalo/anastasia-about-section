@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Home",
+    "link": "/",
+    "isAnchor": false
+  },
+  {
+    "name": "Clement",
+    "link": "#clement",
+    "isAnchor": true,
+    "page": "/"
+  },
+  {
+    "name": "FAQ",
+    "link": "/faq",
+    "isAnchor": false
+  },
+  {
+    "name": "Medium",
+    "link": "blog",
+    "isAnchor": false
+  }
+]

@@ -1,0 +1,15 @@
+.home{
+  &-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  &__content{
+    border: 1px solid;
+    width: 70%;
+    margin: 0 auto;
+    padding: 10vw;
+    text-align: center;
+  }
+}

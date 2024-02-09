@@ -1,0 +1,19 @@
+.blog-details {
+  margin-top: 7vw;
+
+  .block__content {
+    p:has(code) {
+      font-size: 1vw;
+      background: #646464;
+      color: aliceblue;
+      width: 70%;
+      padding-left: 1vw;
+    }
+  }
+
+  &__image {
+    width: 100%;
+    height: 80lvh;
+    margin-bottom: 4vw;
+  }
+}

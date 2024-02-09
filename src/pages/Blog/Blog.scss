@@ -1,0 +1,12 @@
+.blog {
+  margin: 8vw 0 5vw;
+  position: relative;
+
+  &__list {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    row-gap: 4vw;
+    margin-top: 2vw;
+  }
+}
