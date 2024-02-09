@@ -17,14 +17,20 @@ function easeInOutExpo(x: number): number {
     : (2 - Math.pow(2, -20 * x + 10)) / 2;
 }
 
+function easeInOutCirc(x: number): number {
+  return x < 0.5
+    ? (1 - Math.sqrt(1 - Math.pow(2 * x, 2))) / 2
+    : (Math.sqrt(1 - Math.pow(-2 * x + 2, 2)) + 1) / 2;
+  }
+
 export const ScrollProvider: React.FC<ScrollProviderProps> = ({ children }) => {
   const locomotiveScroll = useRef<any>(null);
 
   const scrollTo: ScrollToFunction = (e, currentLink) => {
     e.preventDefault();
     locomotiveScroll.current.scrollTo(currentLink, {
-      duration: 1.7,
-      easing: (x: number) => easeInOutExpo(x),
+      duration: 2.7,
+      easing: (x: number) => easeInOutExpo(x),      
     });
   };
 
@@ -67,10 +73,10 @@ export const ScrollProvider: React.FC<ScrollProviderProps> = ({ children }) => {
       const LocomotiveScroll = (await import("locomotive-scroll")).default;
       locomotiveScroll.current = new LocomotiveScroll({
         lenisOptions: {
-          duration: 0.7,
+          duration: 1,
           lerp: 0.1,
           smoothWheel: true,
-          wheelMultiplier: 2,
+          wheelMultiplier: 1.5,
         },
       });
     })();

@@ -1,75 +1,173 @@
 import FullWidthBg from "@/components/FullWidthBg/FullWidthBg";
-import React from "react";
+import React, { useRef, useState } from "react";
 import "./Home.scss";
-import { useIsPresent } from "framer-motion";
+import { motion, useIsPresent } from "framer-motion";
 import { Transition } from "@/components/Transition/Transition";
+import { useInView } from "react-intersection-observer";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/all";
+
+const animation = (y) => {
+  return {
+    initial: (i) => ({
+      y,
+      transition: {
+        duration: 0.7,
+        ease: [.51,-0.01,.21,1.01],
+        delay: 0.075 * i,
+      },
+    }),
+    enter: (i) => ({
+      y: "0",
+      transition: {
+        duration: 0.7,
+        ease: [.51,-0.01,.21,1.01],
+        delay: 0.075 * i,
+      },
+    }),
+  };
+};
 
 export default function Home() {
   const isPresent = useIsPresent();
 
-  return (
-    <>
-      <main className="home">
-        <FullWidthBg
-          classSection="home-section section-1 "
-          url="https://images.unsplash.com/photo-1604079628040-94301bb21b91?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        >
-          <div className="home__content">
-            <h1>
-              It is a long established fact that a reader will be distracted by
-              the readable content of a page when looking at its layout.
-            </h1>
-          </div>
-        </FullWidthBg>
-        <FullWidthBg
-          classSection="home-section section-2 "
-          url="https://images.unsplash.com/photo-1604076913837-52ab5629fba9?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        >
-          <div className="home__content">
-            <h1>Matthias Leidinger</h1>
-            Originally hailing from Austria, Berlin-based photographer Matthias
-            Leindinger is a young creative brimming with talent and ideas. This
-            is a story on the border between reality and imaginary, about the
-            contradictory feelings that the insularity of a rocky, arid, and
-            wild territory provokes”—so French photographer Clément Chapillon
-            describes his latest highly captivating project Les rochers fauves
-            (French for ‘The tawny rocks’). Though he views photography as a
-            medium for storytelling, Zissou’s images don’t insist on a
-            narrative. Both crisp and ethereal, they’re encoded with an
-            ambiguity—a certain tension—that lets the viewer find their own
-            story within them.
-          </div>
-        </FullWidthBg>
-        <FullWidthBg
-          classSection="home-section section-3"
-          id="clement"
-          url="https://images.unsplash.com/photo-1550275994-2bc88dc68637?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8MTd8M1JwNl9KdnJtU1l8fGVufDB8fHx8fA%3D%3D"
-        >
-          <div className="home__content">
-            <h1>Clément Chapillon</h1>
-            Though he views photography as a medium for storytelling, Zissou’s
-            images don’t insist on a narrative. Both crisp and ethereal, they’re
-            encoded with an ambiguity—a certain tension—that lets the viewer
-            find their own story within them.
-          </div>
-        </FullWidthBg>
-        <FullWidthBg
-          classSection="home-section section-4 "
-          url="https://images.unsplash.com/photo-1533158326339-7f3cf2404354?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDEwfHx8ZW58MHx8fHx8"
-        >
-          <div className="home__content">
-            <h1>Mathias Svold and Ulrik Hasemann</h1>
-            Dutch photographer Mark Rammers has shared with IGNANT the first
-            chapter of his latest photographic project, ‘all over
-            again’—captured while in residency at Hektor, an old farm in Los
-            Valles, Lanzarote. Titled ‘Beginnings’, the mesmerizing collection
-            of images is a visual and meditative journey into the origins of
-            regrets and the uncertainty of stepping into new unknowns.
-          </div>
-        </FullWidthBg>
-      </main>
+  const [isFliped, setFlip] = useState(false);
 
-      <Transition isPresent={isPresent} />
-    </>
+  const phase = [
+    "You`re okay! It`s not an illusion, let me hear you,",
+    "I`ll show you your scale and how you can get there",
+  ];
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  useGSAP(() => {
+    gsap.to('.hero', {
+      backgroundPositionY: '10%',
+      clipPath: 'inset(0 0 60% 0)',
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '.hero',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: true,
+      }
+    });
+
+    gsap.to(".slider", {
+      scrollTrigger: {
+        trigger: ".slider-wrapper",
+        start: "top center",
+        end: "95% center",
+        pin: ".slider",
+        pinSpacer: false,
+      },
+    });
+
+    ScrollTrigger.create({
+      trigger: ".slider-wrapper",
+      start: "40% center",
+      end: "top center",
+      scrub: true,
+      onEnter: () => setFlip(true),
+      onLeaveBack: () => setFlip(false),
+    });
+  });
+
+  return (
+    <main className="home">
+      <div className="hero">
+        <h1 className="hero__title">
+          Your vision partner.
+        </h1>
+      </div>
+      <div className="slider-wrapper">
+        <div className="slider">
+          <h1 className="bold">
+            <motion.p
+              variants={animation(-100)}
+              initial="initial"
+              animate={!isFliped ? "enter" : "initial"}
+            >
+              but...
+            </motion.p>
+          </h1>
+          <div className="slider__text">
+            <motion.p
+              variants={animation(-100)}
+              initial="initial"
+              animate={!isFliped ? "enter" : "initial"}
+            >
+              the most important thing you need to know
+            </motion.p>
+          </div>
+
+          <h1 className="slider__title-2">
+            <div>
+              {phase.map((p, index) => {
+                return (
+                  <div key={index} className="mask-text__line">
+                    <motion.p
+                      custom={index}
+                      variants={animation(100)}
+                      initial="initial"
+                      animate={isFliped ? "enter" : "initial"}
+                    >
+                      {p}
+                    </motion.p>
+                  </div>
+                );
+              })}
+            </div>
+          </h1>
+        </div>
+      </div>
+      <div className="second-part">
+        <div className="safe-space">
+          <h1 className="safe-space__title">
+            <span>Let me be a safe</span>
+            <span>space for your</span>
+            <span>business vision ツ</span>
+          </h1>
+          <img src="/images/safe-space-card.jpg" alt="anastasia-1" className="safe-space__image" />
+        </div>
+      </div>
+    </main>
+  );
+}
+
+function MaskText({ phrase }) {
+  const animation = {
+    initial: { y: "100%" },
+    enter: (i) => ({
+      y: "0",
+      transition: {
+        duration: 0.75,
+        ease: [0.33, 1, 0.68, 1],
+        delay: 0.075 * i,
+      },
+    }),
+  };
+
+  const { ref, inView, entry } = useInView({});
+
+  return (
+    <div ref={ref} className="mask-text">
+      {phrase &&
+        phrase.map((p, index) => {
+          return (
+            <div key={index} className="mask-text__line">
+              <motion.p
+                custom={index}
+                variants={animation}
+                initial="initial"
+                animate={inView ? "enter" : ""}
+              >
+                {p}
+              </motion.p>
+            </div>
+          );
+        })}
+    </div>
   );
 }

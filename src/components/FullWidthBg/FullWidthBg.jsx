@@ -19,7 +19,7 @@ const FullWidthBg = (
 
     const { ref, inView } = useInView({
       triggerOnce: true,
-      fallbackInView: true,
+      threshold: 0,
     });
 
   return (
